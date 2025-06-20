@@ -78,7 +78,7 @@ image-history/
 - **Gemini AI (Google):**
   - Se utiliza para generar historias y nuevas imágenes a partir de una imagen y una descripción.
   - Paquete: `@google/genai`
-  - Configuración vía variables de entorno: `GEMINI_API_URL`, `GEMINI_API_KEY`
+  - Configuración vía variables de entorno: `GEMINI_API_KEY`
 
 - **Supabase Storage:**
   - Almacenamiento de imágenes originales, generadas y PDFs.
