@@ -19,6 +19,7 @@ model ImageStory {
   originalImage String
   createdImage  String
   pdfUrl        String
+  title         String
   story         String
   phoneNumber   String
   createdAt     DateTime @default(now())

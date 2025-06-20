@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class CreateGenerateStoryDto {
+export class GenerateStoryDto {
   @IsString()
   description: string;
 } 

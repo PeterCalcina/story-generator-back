@@ -13,7 +13,7 @@ export class GeminiAiService {
   async generateStoryAndImage(
     image: Express.Multer.File,
     prompt: string,
-  ): Promise<{ story: string; imageCreated: Express.Multer.File }> {
+  ): Promise<{ title: string; content: string; imageCreated: Express.Multer.File }> {
     const base64Image = image.buffer.toString('base64');
     const description = promptGemini(prompt);
 
@@ -68,7 +68,10 @@ export class GeminiAiService {
 
       if (!imageCreated) throw new Error('No se generó ninguna imagen');
 
-      return { story, imageCreated };
+      const title = story.split('===')[0];
+      const content = story.split('===')[1];
+
+      return { title, content, imageCreated };
     } catch (error) {
       throw new Error('Error al generar historia e imagen con Gemini: ' + error.message);
     }

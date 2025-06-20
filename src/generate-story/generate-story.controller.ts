@@ -1,6 +1,6 @@
 import { Controller, Post, UploadedFile, Body, UseInterceptors, HttpStatus, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreateGenerateStoryDto } from './dto/create-generate-story.dto';
+import { GenerateStoryDto } from './dto/generate-story.dto';
 import { successResponse } from 'src/common/responses/success-response';
 import { GenerateStoryService } from './generate-story.service';
 import { User } from 'src/auth/user.decorator';
@@ -20,10 +20,10 @@ export class GenerateStoryController {
   )
   async generarImagen(
     @UploadedFile() image: Express.Multer.File,
-    @Body() body: CreateGenerateStoryDto,
+    @Body() body: GenerateStoryDto,
     @User('phone') phone: string,
   ) {
-    const response = await this.generateStoryService.generateImage(image, body.description, phone);
+    const response = await this.generateStoryService.generateStory(image, body.description, phone);
     return successResponse(response, 'Historia generada correctamente', HttpStatus.CREATED);
   }
 
