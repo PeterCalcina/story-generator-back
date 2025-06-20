@@ -4,6 +4,10 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [GenerateStoryModule, AuthModule, PrismaModule],
+  imports: [
+    GenerateStoryModule,
+    AuthModule,
+    PrismaModule,
+  ],
 })
 export class AppModule {}
