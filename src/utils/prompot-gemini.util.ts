@@ -4,9 +4,13 @@ import { stylePrompts } from 'src/generate-story/prompts/style-prompts';
 export const promptGemini = ({ description, style }: GenerateStoryDto) => {
   const imageStyle = stylePrompts[style as keyof typeof stylePrompts];
 
-  return `A partir de la imagen proporcionada y la siguiente descripción: '${description}', escribe una historia corta 
-  en español de aproximadamente 500 palabras. La historia debe ser creativa, emocional y con un tono narrativo envolvente, incluyendo un inicio, un desarrollo y un final claro.
-  Debe tener un título separado del contenido por la línea '===' (por ejemplo: "Título de la historia === Contenido").
-  Además, genera una ilustración altamente detallada y profesional en estilo artístico ${imageStyle.label}.
+  return `Based on the provided image and the following description: '${description}', write a short story in **Spanish** of approximately 500 words.
+  The story should be emotional and immersive, featuring a clear beginning, middle, and end. Include a compelling title, separated from the story content using '==='.
+
+  Additionally, generate a highly detailed illustration in the '${imageStyle.label}' artistic style.
+  The new image must be a faithful enhancement of the original — no visual elements should be altered, removed, or reinterpreted.
+  Focus solely on visual improvements: refined lines, detailed textures, enhanced shading, and a color palette aligned with the '${imageStyle.label}' aesthetic.
+  The composition, structure, and core visual content must remain intact. However, you may add stylistic flourishes or subtle artistic details to elevate the image's quality.
+  
   ${imageStyle.description}`;
 };
