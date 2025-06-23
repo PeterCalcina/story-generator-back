@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { getEnvironmentConfig } from 'src/common/config/environment.config';
 import { promptGemini } from 'src/utils/prompot-gemini.util';
 import { GoogleGenAI } from '@google/genai';
+import { GenerateStoryDto } from '../dto/generate-story.dto';
 
 @Injectable()
 export class GeminiAiService {
@@ -11,15 +12,15 @@ export class GeminiAiService {
   });
 
   async generateStoryAndImage(
-    image: Express.Multer.File,
-    prompt: string,
+    image: Express.Multer.File, 
+    generateStoryDto: GenerateStoryDto,
   ): Promise<{
     title: string;
     content: string;
     imageCreated: Express.Multer.File;
   }> {
     const base64Image = image.buffer.toString('base64');
-    const description = promptGemini(prompt);
+    const completePrompt = promptGemini(generateStoryDto);
 
     const contents = [
       {
@@ -32,7 +33,7 @@ export class GeminiAiService {
             },
           },
           {
-            text: description,
+            text: completePrompt,
           },
         ],
       },

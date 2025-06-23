@@ -3,6 +3,7 @@ import { SupabaseStorageService, GeminiAiService } from './services';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { generatePdfBuffer } from 'src/utils/pdf-generator.util';
 import { CreateStoryDto } from './dto/create-story.dto';
+import { GenerateStoryDto } from './dto/generate-story.dto';
 
 @Injectable()
 export class GenerateStoryService {
@@ -14,12 +15,12 @@ export class GenerateStoryService {
 
   async generateStory(
     image: Express.Multer.File,
-    description: string,
+    generateStoryDto: GenerateStoryDto,
     phone: string,
   ): Promise<CreateStoryDto> {
     const imageUploadOriginal = await this.supabaseStorage.uploadImage(image);
     const { title, content, imageCreated } =
-      await this.geminiAiService.generateStoryAndImage(image, description);
+      await this.geminiAiService.generateStoryAndImage(image, generateStoryDto);
     const imageUploadCreated =
       await this.supabaseStorage.uploadImage(imageCreated);
     const pdfBuffer = await generatePdfBuffer(title, content, imageCreated);

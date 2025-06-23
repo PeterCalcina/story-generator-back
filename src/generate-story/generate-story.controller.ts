@@ -33,7 +33,7 @@ export class GenerateStoryController {
   ) {
     const response = await this.generateStoryService.generateStory(
       image,
-      body.description,
+      body,
       phone,
     );
     return successResponse(
