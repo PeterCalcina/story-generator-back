@@ -31,4 +31,4 @@ export interface SupabaseUploadResult {
   error: {
     message: string;
   } | null;
-} 
+}

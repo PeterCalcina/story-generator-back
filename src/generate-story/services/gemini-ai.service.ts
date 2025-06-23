@@ -13,7 +13,11 @@ export class GeminiAiService {
   async generateStoryAndImage(
     image: Express.Multer.File,
     prompt: string,
-  ): Promise<{ title: string; content: string; imageCreated: Express.Multer.File }> {
+  ): Promise<{
+    title: string;
+    content: string;
+    imageCreated: Express.Multer.File;
+  }> {
     const base64Image = image.buffer.toString('base64');
     const description = promptGemini(prompt);
 
@@ -39,41 +43,37 @@ export class GeminiAiService {
       responseMimeType: 'text/plain',
     };
 
-    try {
-      const response = await this.ai.models.generateContentStream({
-        model: 'gemini-2.0-flash-preview-image-generation',
-        config,
-        contents,
-      });
+    const response = await this.ai.models.generateContentStream({
+      model: 'gemini-2.0-flash-preview-image-generation',
+      config,
+      contents,
+    });
 
-      let story = '';
-      let imageCreated: Express.Multer.File | null = null;
+    let story = '';
+    let imageCreated: Express.Multer.File | null = null;
 
-      for await (const chunk of response) {
-        const parts = chunk?.candidates?.[0]?.content?.parts;
-        if (!parts) continue;
+    for await (const chunk of response) {
+      const parts = chunk?.candidates?.[0]?.content?.parts;
+      if (!parts) continue;
 
-        for (const part of parts) {
-          if (part.inlineData && !imageCreated) {
-            imageCreated = {
-              buffer: Buffer.from(part.inlineData.data || '', 'base64'),
-              mimetype: part.inlineData.mimeType || 'image/png',
-            } as Express.Multer.File;
-          } else if (part.text) {
-            story += part.text;
-          }
+      for (const part of parts) {
+        if (part.inlineData && !imageCreated) {
+          imageCreated = {
+            buffer: Buffer.from(part.inlineData.data || '', 'base64'),
+            mimetype: part.inlineData.mimeType || 'image/png',
+          } as Express.Multer.File;
+        } else if (part.text) {
+          story += part.text;
         }
-        if (story && imageCreated) break;
       }
-
-      if (!imageCreated) throw new Error('No se generó ninguna imagen');
-
-      const title = story.split('===')[0];
-      const content = story.split('===')[1];
-
-      return { title, content, imageCreated };
-    } catch (error) {
-      throw new Error('Error al generar historia e imagen con Gemini: ' + error.message);
+      if (story && imageCreated) break;
     }
+
+    if (!imageCreated) throw new Error('Gemini no generó ninguna imagen');
+
+    const title = story.split('===')[0];
+    const content = story.split('===')[1];
+
+    return { title, content, imageCreated };
   }
 }

@@ -4,5 +4,3 @@ export const STORAGE_CONSTANTS = {
   PDFS_PATH: 'pdfs',
   TIMEOUT_MS: 30000,
 } as const;
-
-

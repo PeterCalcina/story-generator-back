@@ -17,5 +17,5 @@ export class CreateStoryDto {
   story: string;
 
   @IsString()
-  phoneNumber: string;  
+  phoneNumber: string;
 }

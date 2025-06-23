@@ -6,5 +6,5 @@ export const User = createParamDecorator(
     const user = req.user;
 
     return key ? user?.[key] : user;
-  }
+  },
 );

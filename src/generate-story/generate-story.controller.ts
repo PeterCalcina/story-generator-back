@@ -1,4 +1,12 @@
-import { Controller, Post, UploadedFile, Body, UseInterceptors, HttpStatus, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  Body,
+  UseInterceptors,
+  HttpStatus,
+  Get,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GenerateStoryDto } from './dto/generate-story.dto';
 import { successResponse } from 'src/common/responses/success-response';
@@ -15,7 +23,7 @@ export class GenerateStoryController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: memoryStorage(),
-      fileFilter: imageFileFilter,  
+      fileFilter: imageFileFilter,
     }),
   )
   async generarImagen(
@@ -23,13 +31,25 @@ export class GenerateStoryController {
     @Body() body: GenerateStoryDto,
     @User('phone') phone: string,
   ) {
-    const response = await this.generateStoryService.generateStory(image, body.description, phone);
-    return successResponse(response, 'Historia generada correctamente', HttpStatus.CREATED);
+    const response = await this.generateStoryService.generateStory(
+      image,
+      body.description,
+      phone,
+    );
+    return successResponse(
+      response,
+      'Historia generada correctamente',
+      HttpStatus.CREATED,
+    );
   }
 
   @Get()
   async getStories(@User('phone') phone: string) {
     const stories = await this.generateStoryService.getStories(phone);
-    return successResponse(stories, 'Historias obtenidas correctamente', HttpStatus.OK);
+    return successResponse(
+      stories,
+      'Historias obtenidas correctamente',
+      HttpStatus.OK,
+    );
   }
-} 
+}

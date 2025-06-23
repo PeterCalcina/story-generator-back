@@ -1,9 +1,13 @@
 import * as PDFDocument from 'pdfkit';
 import { Buffer } from 'buffer';
 
-export const generatePdfBuffer = async (title: string, story: string, image: Express.Multer.File): Promise<Buffer> => {
+export const generatePdfBuffer = async (
+  title: string,
+  story: string,
+  image: Express.Multer.File,
+): Promise<Buffer> => {
   const imageBuffer = image.buffer;
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const doc = new PDFDocument();
     const buffers: Buffer[] = [];
 

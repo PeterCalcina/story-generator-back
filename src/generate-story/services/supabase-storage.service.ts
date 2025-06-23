@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { ImageUploadResult, SupabaseUploadResult } from 'src/common/types/image.types';
+import { SupabaseUploadResult } from 'src/common/types/image.types';
 import { ImageUploadException } from 'src/common/exceptions/story-generation.exception';
 import { getEnvironmentConfig } from 'src/common/config/environment.config';
 import { STORAGE_CONSTANTS } from 'src/common/constants/storage.constants';
@@ -14,14 +14,14 @@ export class SupabaseStorageService {
   constructor() {
     this.supabase = createClient(
       this.config.supabase.url,
-      this.config.supabase.serviceRoleKey
+      this.config.supabase.serviceRoleKey,
     );
     this.publicUrl = `${this.config.supabase.url}/storage/v1/object/public`;
   }
 
   async uploadImage(image: Express.Multer.File): Promise<string> {
     const filePath = `${STORAGE_CONSTANTS.ORIGINALS_PATH}/${Date.now()}-${image.originalname}`;
-    
+
     const { data, error }: SupabaseUploadResult = await this.supabase.storage
       .from(STORAGE_CONSTANTS.BUCKET_NAME)
       .upload(filePath, image.buffer, {
@@ -34,7 +34,9 @@ export class SupabaseStorageService {
     }
 
     if (!data?.path) {
-      throw new ImageUploadException('No se recibió la ruta del archivo subido');
+      throw new ImageUploadException(
+        'No se recibió la ruta del archivo subido',
+      );
     }
     const url = `${this.publicUrl}/${STORAGE_CONSTANTS.BUCKET_NAME}/${data.path}`;
 
@@ -55,11 +57,13 @@ export class SupabaseStorageService {
     }
 
     if (!data?.path) {
-      throw new ImageUploadException('No se recibió la ruta del archivo subido');
+      throw new ImageUploadException(
+        'No se recibió la ruta del archivo subido',
+      );
     }
 
     const url = `${this.publicUrl}/${STORAGE_CONSTANTS.BUCKET_NAME}/${data.path}`;
 
     return url;
   }
-} 
+}

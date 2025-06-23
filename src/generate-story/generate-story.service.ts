@@ -18,8 +18,10 @@ export class GenerateStoryService {
     phone: string,
   ): Promise<CreateStoryDto> {
     const imageUploadOriginal = await this.supabaseStorage.uploadImage(image);
-    const { title, content, imageCreated } = await this.geminiAiService.generateStoryAndImage(image, description);
-    const imageUploadCreated = await this.supabaseStorage.uploadImage(imageCreated);
+    const { title, content, imageCreated } =
+      await this.geminiAiService.generateStoryAndImage(image, description);
+    const imageUploadCreated =
+      await this.supabaseStorage.uploadImage(imageCreated);
     const pdfBuffer = await generatePdfBuffer(title, content, imageCreated);
     const pdfUrl = await this.supabaseStorage.uploadPdf(pdfBuffer);
 

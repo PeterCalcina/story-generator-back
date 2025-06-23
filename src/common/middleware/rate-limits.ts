@@ -11,8 +11,8 @@ export const generalRateLimiter = rateLimit({
     next(
       new HttpException(
         'Has superado el límite de solicitudes permitidas. Por favor, inténtalo de nuevo más tarde.',
-        HttpStatus.TOO_MANY_REQUESTS
+        HttpStatus.TOO_MANY_REQUESTS,
       ),
     );
-  }, 
+  },
 });
