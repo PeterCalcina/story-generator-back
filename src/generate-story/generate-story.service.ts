@@ -51,6 +51,9 @@ export class GenerateStoryService {
           equals: phone,
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      }
     });
   }
 }
